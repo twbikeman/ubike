@@ -1,0 +1,2 @@
+python ubikeToMysql.py
+
