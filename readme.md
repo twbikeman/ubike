@@ -33,3 +33,25 @@ flask run
 set FLASK_APP=flaskr
 set FLASK_ENV=development
 flask run
+
+
+CREATE USER 'newuser'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
+FLUSH PRIVILEGES;
+
+sudo systemctl stop apache2
+
+tmux
+C-b % -> horizontal split
+
+tmux ls
+
+INTO OUTFILE '/path/to/file.csv'
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+FROM ts
+
+csv
+csv.writer()
+
+.writerow(row)
