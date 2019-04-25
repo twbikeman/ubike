@@ -78,6 +78,10 @@ sudo systemctl stop apache2
 
 adduser username
 
+usermod -aG sudo username
+
+------------------------------inpu
+
 tmux
 C-b % -> horizontal split
 
@@ -91,3 +95,15 @@ FROM ts
 csv
 csv.writer()
 .writerow(row)
+
+------------------------------------------
+pip install virtualenv
+
+virtualenv --version
+
+virtualenv venv
+virtualenv -p /usr/bin/python2.7 env
+
+source venv/bin/activate
+
+deactivate
