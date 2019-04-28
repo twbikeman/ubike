@@ -1,0 +1,9 @@
+CREATE TABLE weather (
+id INT  NOT NULL AUTO_INCREMENT,
+sta VARCHAR(10),
+temp FLOAT,
+humid FLOAT,
+rain FLOAT,
+time TIMESTAMP,
+PRIMARY KEY(id)
+);

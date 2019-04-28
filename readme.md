@@ -29,6 +29,9 @@ SHOW VARIABLES LIKE  'char%';
 
 /etc/mysql/my.cnf
 
+/etc/mysql/mariadb.conf.d/50-serever.cnf
+bind-address=0.0.0.0
+
 [client]
 default-character-set=utf8
 
@@ -158,3 +161,5 @@ deactivate
 
 ------ python --------
 pip install beautifulsoup4
+pip install lxml
+sudo -H pip3 install pymysql

@@ -1,9 +1,18 @@
 from selenium import webdriver
 import time as computer_time
 from bs4 import BeautifulSoup
-# linux use linux_chromedrive
-driver = webdriver.Chrome()
-driver.implicitly_wait(10)
+import pymysql
+import subprocess
+
+
+try:
+    process = subprocess.Popen(['hostname -I'],stdout=subprocess.PIPE, shell=True)
+    ipaddr = process.communicate()[0].decode('utf-8','ignore').strip()
+    print('ip addr: ', ipaddr)    
+except:
+    print("fail")
+
+
 
 
 """
@@ -26,6 +35,10 @@ C0AH7.htm 松山 /松山
 CAAH6.htm 大安森林 /大安
 """
 
+# -------------- chrome --------------
+driver = webdriver.Chrome()
+driver.implicitly_wait(10)
+
 sta ={'陽明山': '46693.htm', 
 '鞍部': '46691.htm', 
 '臺北': '46692.htm', 
@@ -45,12 +58,15 @@ sta ={'陽明山': '46693.htm',
 '大安森林': 'CAAH6.htm' 
 }
 
+db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+cursor = db.cursor()
+query_str ="INSERT INTO weather(sta, temp, humid, rain) VALUES('{0}','{1}','{2}','{3}')"
 
 
-for (i,j) in sta.items():
+for (staname,j) in sta.items():
     driver.get('https://www.cwb.gov.tw/m/o/real/' + j)
     soup = BeautifulSoup(driver.page_source,'lxml')
-    print('--------' + i + '----------')
+    print('--------' + staname + '----------')
 
     time = soup.select('#obs > div > p > span')
     tag_temp1 = soup.select('table.table.table-bordered > tbody > tr > td > span.temp1')
@@ -78,5 +94,13 @@ for (i,j) in sta.items():
     print('humidity:', recHumid, sep=' ')
     print('rain:', recRain, sep=' ')
 
+## --------write to db -----------------------
+    cursor.execute(query_str.format(staname, recTemp, recHumid, recRain))
+    db.commit()
+## --------end --------------------------------
+
     computer_time.sleep(1)
+
+db.close()
+
 driver.quit()
