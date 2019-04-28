@@ -7,6 +7,9 @@ ln [option] TARGET LINK_NAME
 hostname -I
 
 ---------------- MariaDB --------
+
+/opt/google/chrome/google-chrome
+
 f12
 
 apt-get update -y
