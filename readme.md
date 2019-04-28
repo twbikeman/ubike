@@ -2,6 +2,7 @@
 
 sudo apt-get install openssh-server
 
+ln [option] TARGET LINK_NAME
 
 ---------------- MariaDB --------
 f12
@@ -66,7 +67,7 @@ CREATE TABLE ubike (
 
 ---------git -----
 git -- version
-
+git config --global core.autocrlf false
 ---------------------------------
 
 sudo apt-get install vsftpd
@@ -146,3 +147,6 @@ virtualenv -p /usr/bin/python2.7 env
 source venv/bin/activate
 
 deactivate
+
+------ python --------
+pip install beautifulsoup4
