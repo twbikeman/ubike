@@ -4,6 +4,8 @@ sudo apt-get install openssh-server
 
 ln [option] TARGET LINK_NAME
 
+hostname -I
+
 ---------------- MariaDB --------
 f12
 
@@ -67,6 +69,8 @@ CREATE TABLE ubike (
 
 ---------git -----
 git -- version
+git config --list
+.git/config
 git config --global core.autocrlf false
 ---------------------------------
 
