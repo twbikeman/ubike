@@ -1,8 +1,8 @@
 from selenium import webdriver
-
+import time as computer_time
 from bs4 import BeautifulSoup
-
-driver = webdriver.Chrome('./chromedriver')
+# linux use linux_chromedrive
+driver = webdriver.Chrome()
 driver.implicitly_wait(10)
 
 
@@ -54,12 +54,17 @@ for (i,j) in sta.items():
 
     time = soup.select('#obs > div > p > span')
     tag_temp1 = soup.select('table.table.table-bordered > tbody > tr > td > span.temp1')
+
+    recTemp = float(tag_temp1[0].string.strip())
+
+
+
     tag_td7 = soup.select('table.table.table-bordered > tbody > tr:nth-child(7) > td')
     tag_rain = soup.select("table.table.table-bordered > tbody > tr > td > font[color='black']")
     print('time:', time[0].string.strip(), sep=' ')
-    print('temp:', tag_temp1[0].string.strip(), sep=' ')
+    print('temp:', recTemp, sep=' ')
     print('humidity:', tag_td7[0].string.strip(), sep=' ')
     print('rain:', tag_rain[0].string.strip(), sep=' ')
 
-
+    computer_time.sleep(1)
 driver.quit()
