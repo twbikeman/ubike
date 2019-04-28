@@ -1,6 +1,10 @@
 import subprocess
+try:
+    process = subprocess.Popen(['hostname -I'],stdout=subprocess.PIPE, shell=True)
 
-process = subprocess.Popen(['hostname','-I'],stdout=subprocess.PIPE, shell=True)
 
-# p = subprocess.Popen(['date'], stdout=subprocess.PIPE)
-print(process.communicate()[0].decode('utf-8'))
+    ipaddr = process.communicate()[0].decode('utf-8','ignore')
+    print(ipaddr.strip())
+    
+except:
+    print("fail")
