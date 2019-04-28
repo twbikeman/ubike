@@ -55,16 +55,28 @@ for (i,j) in sta.items():
     time = soup.select('#obs > div > p > span')
     tag_temp1 = soup.select('table.table.table-bordered > tbody > tr > td > span.temp1')
 
-    recTemp = float(tag_temp1[0].string.strip())
+    try:
+        recTemp = float(tag_temp1[0].string.strip())
+    except:
+        recTemp = -1.0
 
 
 
     tag_td7 = soup.select('table.table.table-bordered > tbody > tr:nth-child(7) > td')
+    try:
+        recHumid = float(tag_td7[0].string.strip())
+    except:
+        recHumid = -1.0
+    
     tag_rain = soup.select("table.table.table-bordered > tbody > tr > td > font[color='black']")
+    try:
+        recRain = float(tag_rain[0].string.strip())
+    except:
+        recRain = -1.0
     print('time:', time[0].string.strip(), sep=' ')
     print('temp:', recTemp, sep=' ')
-    print('humidity:', tag_td7[0].string.strip(), sep=' ')
-    print('rain:', tag_rain[0].string.strip(), sep=' ')
+    print('humidity:', recHumid, sep=' ')
+    print('rain:', recRain, sep=' ')
 
     computer_time.sleep(1)
 driver.quit()
