@@ -126,6 +126,10 @@ tmux
 C-b % -> horizontal split
 
 tmux ls
+tmux new -s myname
+tmux a -t myname
+
+C-b d => detach
 
 INTO OUTFILE '/path/to/file.csv'
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
