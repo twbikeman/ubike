@@ -1,0 +1,1 @@
+* * * * * cd /home/che0520/ubike && /usr/bin/python3 webToMysql.py >> run.log
