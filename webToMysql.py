@@ -36,7 +36,14 @@ CAAH6.htm 大安森林 /大安
 """
 
 # -------------- chrome --------------
-driver = webdriver.Chrome()
+
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+
+
+driver = webdriver.Chrome('./chromedriver', chrome_options=options)
 driver.implicitly_wait(10)
 
 sta ={'陽明山': '46693.htm', 
@@ -65,6 +72,7 @@ query_str ="INSERT INTO weather(sta, temp, humid, rain) VALUES('{0}','{1}','{2}'
 
 for (staname,j) in sta.items():
     driver.get('https://www.cwb.gov.tw/m/o/real/' + j)
+    computer_time.sleep(1)
     soup = BeautifulSoup(driver.page_source,'lxml')
     print('--------' + staname + '----------')
 
@@ -99,7 +107,7 @@ for (staname,j) in sta.items():
     db.commit()
 ## --------end --------------------------------
 
-    computer_time.sleep(1)
+    
 
 db.close()
 
