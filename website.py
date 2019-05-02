@@ -14,11 +14,12 @@ def root(name = None):
 
 @app.route('/index.html')
 def index():
-    with open('index.html','r') as fp:
-        content = ''
-        for line in fp.readlines():
-            content +=  line
-    return Response(content, mimetype="text/html")
+    # with open('index.html','r') as fp:
+    #     content = ''
+    #     for line in fp.readlines():
+    #         content +=  line
+    # return Response(content, mimetype="text/html")
+    return render_template('index.html')
     
 
 @app.route( "/<path>")
@@ -27,8 +28,6 @@ def DownloadLogFile (path = None):
         return send_file(path, as_attachment=True)
     except:
         return '404'
-
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port = 80)
