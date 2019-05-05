@@ -27,6 +27,9 @@ use test;
 
 use tables;
 
+DROP TABLE table_name;
+
+DESC table_name;
 
 SHOW VARIABLES LIKE  'char%';
 
@@ -34,6 +37,9 @@ SHOW VARIABLES LIKE  'char%';
 
 /etc/mysql/mariadb.conf.d/50-serever.cnf
 bind-address=0.0.0.0
+
+set sql_mode=''
+
 
 [client]
 default-character-set=utf8
@@ -51,26 +57,8 @@ CREATE USER 'newuser'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
 FLUSH PRIVILEGES;
 
-# CREATE DATABASE project_dsci;
-CREATE TABLE ubike (
-     id INT NOT NULL AUTO_INCREMENT,
-     sno VARCHAR(10),
-     sna VARCHAR(40),
-     tot INT,
-     sbi INT,
-     sarea VARCHAR(40),
-     mday TIMESTAMP,
-     lat FLOAT,
-     lng FLOAT,
-     ar VARCHAR(40),
-     sareaen VARCHAR(40),
-     snaen VARCHAR(40,)
-     aren VARCHAR(40),
-    bemp INT,
-     act INT,
-);
 
-# {"retCode":1,"retVal":{"0001":{"sno": "0001", "sna": "捷運市政府站(3號出口)", "tot": "180", "sbi": "139", "sarea": "信義區", "mday": "20190412152034", "lat": "25.0408578889", "lng": "121.567904444", "ar": "忠孝東路/松仁路(東南側)", "sareaen": "Xinyi Dist.", "snaen": "MRT Taipei City Hall Stataion(Exit 3)-2", "aren": "The S.W. side of Road Zhongxiao East Road & Road Chung Yan.", "bemp": "40", "act": "1"},
+
 
 
 ---------git -----
