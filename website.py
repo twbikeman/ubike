@@ -3,23 +3,67 @@ from flask import Flask
 from flask import render_template
 from flask import send_file
 from flask import Response
+import pymysql
+import subprocess
+
+
+try:
+    process = subprocess.Popen(['hostname -I'],stdout=subprocess.PIPE, shell=True)
+    ipaddr = process.communicate()[0].decode('utf-8','ignore').strip()
+    print('ip addr: ', ipaddr)    
+except:
+    print("fail")
+
+
+
+"""
+www.cwb.gov.tw/m/o/real/A0A46.html
+46693.htm 陽明山 /北投 ZHUZIHU
+46691.htm 鞍部 /北投 ANBU
+46692.htm 臺北 / 中正 TAIPEI 100
+C0AC8.htm 文山 /文山 WENSHAN
+C0A98.htm 社子 /士林 SHEZIH
+C0A9A.htm 大直 /中山 DAZHI 104
+C0A9B.htm 石牌 /北投 SHIPAI
+C0A9C.htm 天母 /士林 TIANMU
+C0A9E.htm 士林 /士林 SHIHLIN
+C0A9F.htm 內湖 /內湖 NEIHU
+C0AC7.htm 信義 /信義 XINYI
+C0AC4.htm 大屯山 /北投 DATUNSHAN
+A0A46.htm 文化大學 /士林 
+C0AH4.htm 平等 /士林 PINGDENG
+A0A01.htm 臺灣大學 /大安 CONGGUAN
+C0AH7.htm 松山 /松山 SONGSHAN
+CAAH6.htm 大安森林 /大安
+"""
+
+
+
+db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+cursor = db.cursor(pymysql.cursors.DictCursor)
+query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
+cursor.execute(query_str)
+weather = {}
+db.commit()
+for row in cursor:
+    sta = row['sta']
+    print(row['sta'],row['humid'], row['time'])
+    weather[sta] = [row['temp'],row['humid'], row['rain'], row['time']]
+db.close()
 
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def root(name = None):
-    
-    return render_template('index.html')
 
 @app.route('/index.html')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', weather = weather )
 
 @app.route('/query.html')
-def index():
-    return render_template('query.html')
+def query():
+    return render_template('query.html', weather = weather )
     
 
 @app.route( "/<path>")

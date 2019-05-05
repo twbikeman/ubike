@@ -6,6 +6,10 @@ ln [option] TARGET LINK_NAME
 
 hostname -I
 
+ps aux
+
+kill -9 PID
+
 ---------------- MariaDB --------
 
 /opt/google/chrome/google-chrome
