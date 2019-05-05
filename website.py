@@ -37,12 +37,14 @@ C0AH7.htm 松山 /松山 SONGSHAN
 CAAH6.htm 大安森林 /大安
 """
 
+# (sta, '臺北','大直','松山','臺灣大學','大安森林','信義','社子','天母','士林','大屯山','文化大學','平等','陽明山','鞍部','石牌','大屯山','內湖','文山')
 
 
 db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
 db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
 cursor = db.cursor(pymysql.cursors.DictCursor)
-query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
+# query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
+query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather ORDER BY FIELD(sta, '臺北','大直','松山','臺灣大學','大安森林','信義','社子','天母','士林','大屯山','文化大學','平等','陽明山','鞍部','石牌','大屯山','內湖','文山');"
 cursor.execute(query_str)
 weather = {}
 db.commit()
