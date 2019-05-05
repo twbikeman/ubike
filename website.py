@@ -10,17 +10,16 @@ app = Flask(__name__)
 
 @app.route('/')
 def root(name = None):
-    # return render_template('hello.html',name = name)
+    
     return render_template('index.html')
 
 @app.route('/index.html')
 def index():
-    # with open('index.html','r') as fp:
-    #     content = ''
-    #     for line in fp.readlines():
-    #         content +=  line
-    # return Response(content, mimetype="text/html")
     return render_template('index.html')
+
+@app.route('/query.html')
+def index():
+    return render_template('query.html')
     
 
 @app.route( "/<path>")
