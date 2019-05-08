@@ -68,9 +68,10 @@ FLUSH PRIVILEGES;
 ---------git -----
 git -- version
 git config --list
-.git/config
+
 git config --global core.autocrlf false
----------------------------------
+
+--------------ftp-------------------
 
 sudo apt-get install vsftpd
 /etc/vsftpd.conf
@@ -79,16 +80,14 @@ local_enable=YES
 write_enable=YES
 chroot_local_user=YES
 
-----------------------------------
+-------------cron---------------------
 
 crontab -e
 
 sudo systemctl restart cron
 
-date
 
-select * from  ;
-
+-------flask----
 
 from flask import Flask
 app = Flask(__name__)
@@ -96,11 +95,13 @@ app = Flask(__name__)
 def hello():
     return 'Hello, world!'
 
+
+
 export FLASK_APP=flaskr
 export FLASK_ENV=development
 flask run
 
-------------windows-------------
+------------flask(windows10)-------------
 set FLASK_APP=flaskr   => export FLASK_APP=flask
 set FLASK_ENV=development => export FLASK_ENV=development
 flask run   => python -m flask run --host=0.0.0.0
@@ -116,13 +117,13 @@ sudo apt-get install mysql-server
 
 sudo systemctl stop apache2
 
-----------------------------
+------------linux----------------
 
 adduser username
 
 usermod -aG sudo username
 
-------------------------------inpu
+-----------tmux-------------------
 
 tmux
 C-b % -> horizontal split
@@ -137,12 +138,14 @@ INTO OUTFILE '/path/to/file.csv'
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 FROM ts
+
+
 ----------
 csv
 csv.writer()
 .writerow(row)
 
-------------------------------------------
+---------------virtualenv---------------------------
 pip install virtualenv
 
 virtualenv --version

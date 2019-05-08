@@ -40,6 +40,7 @@ CAAH6.htm 大安森林 /大安
 # (sta, '臺北','大直','松山','臺灣大學','大安森林','信義','社子','天母','士林','大屯山','文化大學','平等','陽明山','鞍部','石牌','大屯山','內湖','文山')
 
 
+# --------------weather--------------------------
 
 db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
 cursor = db.cursor(pymysql.cursors.DictCursor)
@@ -54,6 +55,25 @@ for row in cursor:
     weather[sta] = [row['temp'],row['humid'], row['rain'], row['time']]
 db.close()
 
+#--------------------ubike -----------------
+
+db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+cursor = db.cursor(pymysql.cursors.DictCursor)
+# query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
+query_str ="SELECT sna, tot, sbi, MAX(mday) AS time FROM ubike GROUP BY sno;"
+cursor.execute(query_str)
+ubike = {}
+db.commit()
+for row in cursor:
+    sna = row['sna']
+    demand = int(row['tot']) - int(row['sbi'])
+    print(row['sna'],row['tot'], row['sbi'], demand , row['time'])
+    ubike[sna] = [int(row['tot']),int(row['sbi']), demand, row['time']]
+db.close()
+
+#-------------------------------------------------------------
+
+
 
 app = Flask(__name__)
 
@@ -63,9 +83,13 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', weather = weather )
 
-@app.route('/query.html')
-def query():
-    return render_template('query.html', weather = weather )
+@app.route('/queryWeb.html')
+def queryWeb():
+    return render_template('queryWeb.html', weather = weather)
+
+@app.route('/queryUbike.html')
+def queryUbike():
+    return render_template('queryUbike.html', ubike = ubike)
     
 
 @app.route( "/<path>")
