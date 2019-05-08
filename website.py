@@ -90,7 +90,12 @@ def queryWeb():
 @app.route('/queryUbike.html')
 def queryUbike():
     return render_template('queryUbike.html', ubike = ubike)
-    
+
+
+@app.route('/datepicker.html')
+def datepicker():
+    return render_template('datepicker.html')
+
 
 @app.route( "/<path>")
 def DownloadLogFile (path = None):
