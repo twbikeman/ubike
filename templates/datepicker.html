@@ -7,22 +7,31 @@
     <script src="{{ url_for('static',filename='jquery-3.4.1.min.js') }}"></script>
     <script src="{{ url_for('static',filename='popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='d3.min.js') }}"></script>
-    <script src="{{ url_for('static/jquery-ui-1.12.1',filename='jquery-ui.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static/jquery-ui-1.12.1',filename='jquery-ui.min.css') }}">
-    
+    <script src="{{ url_for('static',filename='d3.min.js') }}"></script> 
+    <script src="{{ url_for('static',filename='jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='jquery-ui-1.12.1/jquery-ui.min.css') }}">
+   
     <title>Document</title>
 </head>
 <body>
     
-
-   
+    <form>
+    <label for="datepicker">date</label>
     <input id="datepicker">
+    <label for="weather">weather</label>
+    <input type="text" id="weather">
+    <input type="submit" id ="submit">
+    </form>
     
+    <div id="div1"></div>
 
     <script>
-        $('#datepicker').datepicker();
-    </script>
+    $('#datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+    $('#div1').load("pie3.html#svg");
+        
+
   
+    </script>
+
 </body>
 </html>

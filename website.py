@@ -83,6 +83,15 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', weather = weather )
 
+@app.route('/hello.html')
+def hello():
+    return render_template('hello.html')
+
+@app.route('/pie3.html')
+def pie():
+    return render_template('pie3.html')
+
+
 @app.route('/queryWeb.html')
 def queryWeb():
     return render_template('queryWeb.html', weather = weather)
@@ -105,6 +114,6 @@ def DownloadLogFile (path = None):
         return '404'
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port = 80)
+    app.run(host="0.0.0.0", port = 80, debug = True)
 
 
