@@ -163,3 +163,13 @@ pip install beautifulsoup4
 pip install lxml
 sudo -H pip3 install pymysql
 
+--------javascript----------------
+XMLHttpRequest()
+.onload
+
+.open()
+.send(null)
+
+true
+
+

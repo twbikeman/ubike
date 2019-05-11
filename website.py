@@ -105,6 +105,11 @@ def queryUbike():
 def datepicker():
     return render_template('datepicker.html')
 
+@app.route( "/data/<path>")
+def data(path):
+    return render_template('/data/' + path)
+
+
 
 @app.route( "/<path>")
 def DownloadLogFile (path = None):
