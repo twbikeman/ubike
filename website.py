@@ -42,7 +42,6 @@ CAAH6.htm 大安森林 /大安
 
 #---------- weather query function ----------------------
 def query_weather(query_str):
-
     db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     # query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
@@ -57,41 +56,38 @@ def query_weather(query_str):
     db.close()
     return weather
 
-
-
-
-
-
 # --------------weather--------------------------
-
-db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
-cursor = db.cursor(pymysql.cursors.DictCursor)
-# query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
-query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta ORDER BY FIELD(sta, '臺北','大直','松山','臺灣大學','大安森林','信義','社子','天母','士林','大屯山','文化大學','平等','陽明山','鞍部','石牌','大屯山','內湖','文山') ;"
-cursor.execute(query_str)
-weather = {}
-db.commit()
-for row in cursor:
-    sta = row['sta']
-    print(row['sta'],row['humid'], row['time'])
-    weather[sta] = [row['temp'],row['humid'], row['rain'], row['time']]
-db.close()
+def getLastestWeather():
+    db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    # query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
+    query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta ORDER BY FIELD(sta, '臺北','大直','松山','臺灣大學','大安森林','信義','社子','天母','士林','大屯山','文化大學','平等','陽明山','鞍部','石牌','大屯山','內湖','文山') ;"
+    cursor.execute(query_str)
+    weather = {}
+    db.commit()
+    for row in cursor:
+        sta = row['sta']
+        print(row['sta'],row['humid'], row['time'])
+        weather[sta] = [row['temp'],row['humid'], row['rain'], row['time']]
+    db.close()
+    return weather
 
 #--------------------ubike -----------------
-
-db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
-cursor = db.cursor(pymysql.cursors.DictCursor)
-# query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
-query_str ="SELECT sna, tot, sbi, MAX(mday) AS time FROM ubike GROUP BY sno;"
-cursor.execute(query_str)
-ubike = {}
-db.commit()
-for row in cursor:
-    sna = row['sna']
-    demand = int(row['tot']) - int(row['sbi'])
-    print(row['sna'],row['tot'], row['sbi'], demand , row['time'])
-    ubike[sna] = [int(row['tot']),int(row['sbi']), demand, row['time']]
-db.close()
+def getLastestUbike():
+    db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    # query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
+    query_str ="SELECT sna, tot, sbi, MAX(mday) AS time FROM ubike GROUP BY sno;"
+    cursor.execute(query_str)
+    ubike = {}
+    db.commit()
+    for row in cursor:
+        sna = row['sna']
+        demand = int(row['tot']) - int(row['sbi'])
+        print(row['sna'],row['tot'], row['sbi'], demand , row['time'])
+        ubike[sna] = [int(row['tot']),int(row['sbi']), demand, row['time']]
+    db.close()
+    return ubike
 
 #-------------------------------------------------------------
 
@@ -103,7 +99,7 @@ app = Flask(__name__)
 
 @app.route('/index.html')
 def index():
-    return render_template('index.html', weather = weather )
+    return render_template('index.html')
 
 @app.route('/hello.html')
 def hello():
@@ -120,10 +116,12 @@ def pie4():
 
 @app.route('/queryWeb.html')
 def queryWeb():
+    weather = getLastestWeather()
     return render_template('queryWeb.html', weather = weather)
 
 @app.route('/queryUbike.html')
 def queryUbike():
+    ubike = getLastestUbike()
     return render_template('queryUbike.html', ubike = ubike)
 
 
@@ -131,11 +129,11 @@ def queryUbike():
 def datepicker():
     return render_template('datepicker.html')
 
-@app.route('/datepicker1.html')
-def datepicker1():
-    weather = query_weather("SELECT sta, temp, humid, rain, time from weather WHERE DATE(time) = '2019-05-11';")
-    print(weather)
-    return render_template('datepicker1.html', weahter = weather)
+@app.route('/webAfterQuery.html')
+def webAfterQuery():
+    myweather = query_weather("SELECT sta, temp, humid, rain, time from weather WHERE time >= '2019-05-11 01:00:00' AND time <= '2019-05-11 02:00:00';")
+    print(myweather)
+    return render_template('webAfterQuery.html', weather = myweather)
 
 @app.route( "/data/<path>")
 def data(path):

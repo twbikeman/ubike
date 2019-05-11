@@ -2,6 +2,11 @@ $("#update").on({
     click: function(){update()}
 });
 
+$("document").ready(function() {
+    update();
+});
+
+
 function update() {
 
     var xhr = new XMLHttpRequest();
@@ -9,7 +14,7 @@ function update() {
         if(xhr.status == 200) {document.getElementById('content').innerHTML = xhr.responseText}
         else console.log('fail!')
     };
-    xhr.open('GET','/data/data.html',true);
+    xhr.open('GET','/queryUbike.html',true);
     xhr.send(null);
     
 
@@ -27,3 +32,5 @@ function update() {
     xhr2.open('GET','/data/data.json',true);
     xhr2.send(null);
 }
+
+
