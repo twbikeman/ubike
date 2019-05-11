@@ -40,6 +40,28 @@ CAAH6.htm 大安森林 /大安
 # (sta, '臺北','大直','松山','臺灣大學','大安森林','信義','社子','天母','士林','大屯山','文化大學','平等','陽明山','鞍部','石牌','大屯山','內湖','文山')
 
 
+#---------- weather query function ----------------------
+def query_weather(query_str):
+
+    db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    # query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
+    # query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta ORDER BY FIELD(sta, '臺北','大直','松山','臺灣大學','大安森林','信義','社子','天母','士林','大屯山','文化大學','平等','陽明山','鞍部','石牌','大屯山','內湖','文山') ;"
+    cursor.execute(query_str)
+    weather = {}
+    db.commit()
+    for row in cursor:
+        sta = row['sta']
+        print(row['sta'],row['humid'], row['time'])
+        weather[sta] = [row['temp'],row['humid'], row['rain'], row['time']]
+    db.close()
+    return weather
+
+
+
+
+
+
 # --------------weather--------------------------
 
 db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
@@ -91,6 +113,10 @@ def hello():
 def pie():
     return render_template('pie3.html')
 
+@app.route('/pie4.html')
+def pie4():
+    return render_template('pie4.html', data = {'a':11,'b':22})
+
 
 @app.route('/queryWeb.html')
 def queryWeb():
@@ -104,6 +130,12 @@ def queryUbike():
 @app.route('/datepicker.html')
 def datepicker():
     return render_template('datepicker.html')
+
+@app.route('/datepicker1.html')
+def datepicker1():
+    weather = query_weather("SELECT sta, temp, humid, rain, time from weather WHERE DATE(time) = '2019-05-11';")
+    print(weather)
+    return render_template('datepicker1.html', weahter = weather)
 
 @app.route( "/data/<path>")
 def data(path):

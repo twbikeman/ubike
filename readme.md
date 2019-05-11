@@ -78,7 +78,7 @@ sudo apt-get install vsftpd
 anonymous_enable=NO
 local_enable=YES
 write_enable=YES
-chroot_local_user=YES
+
 
 -------------cron---------------------
 
@@ -172,4 +172,7 @@ XMLHttpRequest()
 
 true
 
+----------jquery--------------
+$().on('click', function() {});
 
+$('#').val();
