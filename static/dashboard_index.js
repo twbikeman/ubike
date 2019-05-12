@@ -1,21 +1,42 @@
 $("#update").on({
     click: function(){update()}
+    
 });
 
 $("document").ready(function() {
     update();
+    // $.ajaxSetup ({
+    //     cache: false
+    // });
 });
 
 
 function update() {
 
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-        if(xhr.status == 200) {document.getElementById('content').innerHTML = xhr.responseText}
-        else console.log('fail!')
-    };
-    xhr.open('GET','/queryUbike.html',true);
-    xhr.send(null);
+    // var xhr1 = new XMLHttpRequest();
+    // xhr1.onload = function() {
+    //     if(xhr1.status == 200) {
+    //         document.getElementById('content1').innerHTML = xhr1.responseText;
+    //         console.log(xhr.responseText);
+    //     }
+    //     else console.log('fail!')
+    // };
+    // xhr1.open('GET','/bar3.html',true);
+    // xhr1.send(null);
+    
+    // $.ajaxSetup ({
+    //     // Disable caching of AJAX responses
+    //     cache: false
+    // });
+
+
+    $("#content1").load("/bar3.html");
+
+    // $.get('/bar3.html', function(data){$('#content1').html(data)})
+
+    $("#content2").load("/queryOneUbike.html");
+
+
     
 
     var xhr2 = new XMLHttpRequest();
@@ -27,10 +48,13 @@ function update() {
             newContent += responseObject.events[i].location + "<br>";
             }   
         }    
-        document.getElementById('content2').innerHTML = newContent;
+        document.getElementById('content3').innerHTML = newContent;
     };
     xhr2.open('GET','/data/data.json',true);
     xhr2.send(null);
+
+
+    
 }
 
 
