@@ -1,11 +1,11 @@
 import os
-from flask import Flask
+from flask import Flask, request
 from flask import render_template
 from flask import send_file
 from flask import Response
 import pymysql
 import subprocess
-
+import datetime
 
 try:
     process = subprocess.Popen(['hostname -I'],stdout=subprocess.PIPE, shell=True)
@@ -14,7 +14,17 @@ try:
 except:
     print("fail")
 
+#---------------global--------------
 
+class Data:
+    def __init__(self):
+        listData = []
+        dictData = {}
+        sta = ''
+        date = datetime.datetime.now()
+        
+
+current = Data()
 
 """
 www.cwb.gov.tw/m/o/real/A0A46.html
@@ -72,6 +82,24 @@ def getLastestWeather():
     db.close()
     return weather
 
+#-------------ubike---------------------
+
+def getUbikeData(query_str="SELECT sna, tot, sbi, MAX(mday) AS time FROM ubike GROUP BY sno;"):
+    db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    # query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
+    cursor.execute(query_str)
+    ubike = {}
+    db.commit()
+    for row in cursor:
+        time = row['time']
+        demand = int(row['tot']) - int(row['sbi'])
+        print(row['time'], row['sna'],row['tot'], row['sbi'], demand )
+        ubike[time] = [row['sna'],int(row['tot']),int(row['sbi']), demand]
+    db.close()
+    return ubike, row['sna'], row['time']
+
+
 #--------------------ubike -----------------
 def getLastestUbike():
     db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
@@ -113,6 +141,14 @@ def pie():
 def pie4():
     return render_template('pie4.html', data = {'a':11,'b':22})
 
+@app.route('/bar3.html')
+def bar3():
+    # global gData
+    # print(gData)
+    return render_template('bar3.html', data = current.listData)
+# [5, 10, 13, 19, 21, 25, 22, 18, 15, 13, 11, 12, 15, 20, 18, 17, 16, 18, 23, 25, 11, 11, 11] 
+    
+
 
 @app.route('/queryWeb.html')
 def queryWeb():
@@ -125,9 +161,39 @@ def queryUbike():
     return render_template('queryUbike.html', ubike = ubike)
 
 
-@app.route('/datepicker.html')
-def datepicker():
-    return render_template('datepicker.html')
+
+
+@app.route('/getUbike.html', methods = ['GET','POST'])
+def getUbike():
+    if request.method == 'GET':
+        return request.args.get('query')
+    if request.method == 'POST':
+
+        query_str =  'SELECT sna, tot, sbi, mday AS time From ubike WHERE sna = ' + '"' + request.form['sta'] + '" '  \
+            +  'AND DATE(mday) = ' + '"' + request.form['date'] + '";'
+        print(query_str)
+        bike, current.sta, current.date = getUbikeData(query_str)
+        print(bool(bike))
+        print(bike)
+        bike_demand = []
+        for key, value in bike.items():
+            bike_demand.append(value[3])
+        # print(bike_demand)
+        # global gData
+        # gData = bike_demand[:]
+        current.listData = bike_demand[:]
+        print("----query data-----")
+        print(current.listData)
+        print(current.date)
+        print(current.sta)
+        return request.form['sta'] + request.form['date']
+
+
+
+
+@app.route('/queryOneUbike.html')
+def queryOneUbike():
+    return render_template('queryOneUbike.html')
 
 @app.route('/webAfterQuery.html')
 def webAfterQuery():

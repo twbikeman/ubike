@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="d3.min.js"></script>
+    <script src="{{ url_for('static',filename='popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='d3.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.min.css') }}">
 
-    <style>
+    <!-- <style>
 
         rect {
             transition: all 0.3s;
@@ -15,22 +18,28 @@
         rect:hover {
             fill: orange;
         }
-    </style>
+    </style> -->
 
     <title>Document</title>
 </head>
 <body>
     <p>click on this text to update the chart with new data vlues(once)</p>
-
-    <div id='num'></div>
+    <div id='num'>rent number: </div>
+    <div id='barchart'></div>
 
     <script>
-        var dataset = [5, 10, 13, 19, 21, 25, 22, 18, 15, 13, 11, 12, 15, 20, 18, 17, 16, 18, 23, 25, 11, 11, 11];
-        var dataset1 = [5, 10, 5, 19, 5, 25, 22, 5, 15, 13, 11, 5, 15, 20, 5, 17, 16, 5, 23, 25, 11, 11, 5];
 
-        var w = 500, h = 500;
+        var dataset = [];
+        {% for value in data %}
+        dataset.push({{ value }});
+        {% endfor %}
+        console.log(dataset);
 
-        svg = d3.select("body")
+
+
+        var w = 750, h = 500;
+
+        svg = d3.select("#barchart")
             .append("svg")
             .attr("width", w)
             .attr("height", h);
@@ -54,7 +63,9 @@
             .attr("width", xScale.bandwidth())
             .attr("height", function(d){return yScale(d);})
             .attr("fill","red")
-            .on("click",function(d){d3.select("#num").html(d)});
+            .on("click",function(d){d3.select("#num").html(d)})
+            .on("mouseover", function(d){d3.select(this).attr("fill","orange")})
+            .on("mouseout", function(d){d3.select(this).attr("fill","red")});
 
         svg.selectAll("text")
             .data(dataset)
@@ -70,20 +81,18 @@
             .attr("x", function(d, i){return xScale(i) + xScale.bandwidth() / 2 })
             .attr("y",function(d){return h - yScale(d) + 20;});
             
-
+        // -----------transition----------
     
-        d3.select("p").on("click",function(){
-            svg.selectAll("rect")
-                .data(dataset1)
-                .transition()
-                .attr("x", function(d, i){return xScale(i);})
-                .attr("y", function(d){return h - yScale(d);})
-                .attr("width", xScale.bandwidth())
-                .attr("height", function(d){return yScale(d);})
-                .attr("fill","red");
-
-
-        });
+        // d3.select("p").on("click",function(){
+        //     svg.selectAll("rect")
+        //         .data(dataset1)
+        //         .transition()
+        //         .attr("x", function(d, i){return xScale(i);})
+        //         .attr("y", function(d){return h - yScale(d);})
+        //         .attr("width", xScale.bandwidth())
+        //         .attr("height", function(d){return yScale(d);})
+        //         .attr("fill","red");
+        // });
             
     </script>
     
