@@ -6,6 +6,7 @@ from flask import Response
 import pymysql
 import subprocess
 import datetime
+from flask_caching import Cache
 
 try:
     process = subprocess.Popen(['hostname -I'],stdout=subprocess.PIPE, shell=True)
@@ -18,14 +19,14 @@ except:
 
 class Data:
     def __init__(self):
-        listData = []
-        dictData = {}
-        sta = ''
-        date = datetime.datetime.now()
+        self.listData = []
+        self.dictData = {}
+        self.sta = ''
+        self.date = datetime.datetime.now()
         
 
 current = Data()
-
+print(current.listData)
 """
 www.cwb.gov.tw/m/o/real/A0A46.html
 46693.htm 陽明山 /北投 ZHUZIHU
@@ -85,7 +86,8 @@ def getLastestWeather():
 #-------------ubike---------------------
 
 def getUbikeData(query_str="SELECT sna, tot, sbi, MAX(mday) AS time FROM ubike GROUP BY sno;"):
-    db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+    # db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+    db = pymysql.connect('127.0.0.1','che0520','che670520','project_dsci')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     # query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
     cursor.execute(query_str)
@@ -102,7 +104,7 @@ def getUbikeData(query_str="SELECT sna, tot, sbi, MAX(mday) AS time FROM ubike G
 
 #--------------------ubike -----------------
 def getLastestUbike():
-    db = pymysql.connect(ipaddr,'che0520','che670520','project_dsci')
+    db = pymysql.connect('127.0.0.1','che0520','che670520','project_dsci')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     # query_str ="SELECT sta, temp, humid, rain, MAX(time) as time from weather GROUP BY sta;"
     query_str ="SELECT sna, tot, sbi, MAX(mday) AS time FROM ubike GROUP BY sno;"
@@ -186,6 +188,17 @@ def getUbike():
         print(current.listData)
         print(current.date)
         print(current.sta)
+
+        with open("templates/data/data.json","w") as fp:
+            newList=[]
+            for index, value in enumerate(current.listData):
+                newList.append('"' + str(index) + '": ' + str(value))
+            print(','.join(newList))
+            fp.write('{')
+            fp.write(','.join(newList))
+            fp.write('}')
+            
+
         return request.form['sta'] + request.form['date']
 
 
@@ -193,7 +206,8 @@ def getUbike():
 
 @app.route('/queryOneUbike.html')
 def queryOneUbike():
-    return render_template('queryOneUbike.html')
+    
+    return render_template('queryOneUbike.html', data = current.listData)
 
 @app.route('/webAfterQuery.html')
 def webAfterQuery():
@@ -215,6 +229,8 @@ def DownloadLogFile (path = None):
         return '404'
 
 if __name__ == '__main__':
+    cache = Cache(app, config={"CACHE_TYPE": "null"})
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     app.run(host="0.0.0.0", port = 80, debug = True)
 
 

@@ -31,7 +31,7 @@
     <div id='barchart'></div>
 
     <script>
-
+       
         var dataset = [];
         {% for value in data %}
         dataset.push({{ value }});
@@ -96,6 +96,10 @@
         //         .attr("height", function(d){return yScale(d);})
         //         .attr("fill","red");
         // });
+
+        // d3.interval(function(){
+        //     location.reload();
+        // }, 5000);
             
     </script>
     

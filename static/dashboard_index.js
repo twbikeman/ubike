@@ -1,5 +1,5 @@
 $("#update").on({
-    click: function(){update()}
+    click: function(){update();}
     
 });
 
@@ -13,6 +13,11 @@ $("document").ready(function() {
 
 function update() {
 
+    // $.ajaxSetup ({$.get('/bar3.html', function(data){$('#content1').html(data);})
+    //     // Disable caching of AJAX responses
+    //     cache: false
+    // });
+
     // var xhr1 = new XMLHttpRequest();
     // xhr1.onload = function() {
     //     if(xhr1.status == 200) {
@@ -24,17 +29,15 @@ function update() {
     // xhr1.open('GET','/bar3.html',true);
     // xhr1.send(null);
     
-    // $.ajaxSetup ({
-    //     // Disable caching of AJAX responses
-    //     cache: false
-    // });
+    
 
 
     $("#content1").load("/bar3.html");
 
-    // $.get('/bar3.html', function(data){$('#content1').html(data)})
+    
 
     $("#content2").load("/queryOneUbike.html");
+    // $.get('/bar3.html', function(data){$('#content1').html(data);})
 
 
     
@@ -43,18 +46,17 @@ function update() {
     xhr2.onload = function() {
         if(xhr2.status == 200) {
         var responseObject = JSON.parse(xhr2.responseText);
-        var newContent = '';
-        for (var i = 0; i < responseObject.events.length; i++) {
-            newContent += responseObject.events[i].location + "<br>";
-            }   
-        }    
-        document.getElementById('content3').innerHTML = newContent;
+        // var newContent = '';
+        // for (var i = 0; i < responseObject.events.length; i++) {
+        //     newContent += responseObject.events[i].location + "<br>";
+        //     }   
+        // }    
+        document.getElementById('content3').innerHTML = responseObject;
+       
+        
+        console.log(responseObject);
     };
     xhr2.open('GET','/data/data.json',true);
     xhr2.send(null);
-
-
-    
+    }
 }
-
-
