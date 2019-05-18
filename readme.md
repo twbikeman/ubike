@@ -62,7 +62,7 @@ GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
 FLUSH PRIVILEGES;
 
 
-
+SELECT * FROM project_dsci.ubike ORDER BY id DESC LIMIT 1;
 
 
 ---------git -----

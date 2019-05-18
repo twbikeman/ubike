@@ -201,12 +201,13 @@ def getUbike():
 
         return request.form['sta'] + request.form['date']
 
-
+@app.route('/')
+def root():
+    return render_template('load.html')
 
 
 @app.route('/queryOneUbike.html')
 def queryOneUbike():
-    
     return render_template('queryOneUbike.html', data = current.listData)
 
 @app.route('/webAfterQuery.html')
