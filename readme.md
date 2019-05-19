@@ -172,7 +172,42 @@ XMLHttpRequest()
 
 true
 
+DOMcontentLoad
+
+document.addEventListener()
+
+
+fetch().then()
+
+json().then()
+
+
+
+
 ----------jquery--------------
 $().on('click', function() {});
 
 $('#').val();
+
+
+---------D3 v4----------
+
+
+.call(d3.axisBottom(x))
+
+d3.scaleTime()
+
+.range()
+.rangeRound()
+.domain()
+
+d3.line()
+.x
+.y
+
+
+.datum()
+.attr('d',line)
+
+d3.parseTime()
+
