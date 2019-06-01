@@ -10,6 +10,8 @@ ps aux
 
 kill -9 PID
 
+groups [username]
+
 ---------------- MariaDB --------
 
 /opt/google/chrome/google-chrome
@@ -63,6 +65,19 @@ FLUSH PRIVILEGES;
 
 
 SELECT * FROM project_dsci.ubike ORDER BY id DESC LIMIT 1;
+
+
+
+INTO OUTFILE '/path/to/file.csv'
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+FROM ts
+
+GRANT FILE  ON  *.* TO  
+
+FLUSH PRIVILEGES;
+
+mysql project_dsci -p -e "SELECT * FROM ubike" | sed 's/\t/,/g' > test.csv
 
 
 ---------git -----
@@ -134,11 +149,6 @@ tmux a -t myname
 
 C-b d => detach
 
-INTO OUTFILE '/path/to/file.csv'
-FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-FROM ts
-
 
 ----------
 csv
@@ -170,11 +180,17 @@ XMLHttpRequest()
 .open()
 .send(null)
 
+innerHTML()
+
+
 true
 
 DOMcontentLoad
 
 document.addEventListener()
+
+
+
 
 
 fetch().then()
@@ -183,11 +199,41 @@ json().then()
 
 
 
+import configparser
+import requests
+import json
+
+configparser.ConfigParser()
+.read('x.conf')
+.get('xx','xx')
+
+json.loads(response.text)
+
+try:
+    tag = data["results"][0]["tag"][0]["tag"]
+except Exception as e:
+    print("type error: " + str(e) )
+
+headers = {
+    "accept": "application/json",
+}
+
+requests.post(url, files=files, headers= headers)
 
 ----------jquery--------------
 $().on('click', function() {});
 
-$('#').val();
+$('#').val(); -> get the current value of the first element in the set of matched elements or set the value of evry matched element
+
+html()
+
+
+
+$.ajax
+
+.done()
+
+Object.values()  -> list[]
 
 
 ---------D3 v4----------
