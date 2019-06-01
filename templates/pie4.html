@@ -1,66 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-
-    <script src="{{ url_for('static',filename='jquery-3.4.1.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='popper.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='d3.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.min.css') }}">
-
-
-
-    <title>Document</title>
-</head>
-<body>
 
     <script>
-        var color = d3.scaleOrdinal(d3.schemeCategory10); 
+        function predColor(i) {
+            if (i == 0) return "green";
+                else if (i == 1) return "yellow";
+                    else return "red";
+        }
+  
 
-        var dataset = {};
-
-        {% for key, value in data.items() %}
-        dataset['{{ key }}'] = {{ value }};
-        {% endfor %}
-
-        console.log(dataset);
-
-        var pie = d3.pie().value(function(d){return d.value})
-
-        var mypie = pie(d3.entries(dataset));
-        
+        var pieDataset = {{ pieData }};
+        var pie = d3.pie().sort(null)
+        var prePie = pie(pieDataset);
         var w = 300, h =300;
         var outerRadius = w / 2;
         var innerRadius = 0;
         var arc = d3.arc()
                     .innerRadius(innerRadius)
                     .outerRadius(outerRadius);
-        
         var svg = d3.select("body")
                     .append("svg")
                     .attr("width", w)
                     .attr("height", h)
         var arcs = svg.selectAll("g.arc")
-                        .data(mypie)
+                        .data(prePie)
                         .enter()
                         .append("g")
                         .attr("transform","translate(" + outerRadius + "," + outerRadius + ")");
         
         arcs.append("path")
-            .attr("fill", function(d, i){return color(i);})
+            .attr("fill", function(d, i){return predColor(i);})
             .attr("d", arc);
         
         arcs.append("text")
             .attr("transform", function(d) {return "translate(" + arc.centroid(d) +")"})
             .attr("text-anchor","middle")
-            .text(function(d){return d.data.key + ' ' + d.data.value;});
+            .text(function(d){return d.value;});
 
 
     </script>
     
-</body>
-</html>

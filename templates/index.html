@@ -21,11 +21,15 @@
 <body>
     <div class = "container mt-3">
         <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#latestWea">weather</button>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#latestUbike">Ubike</button>
         <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#accordionBarchart">barchart</button>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#accordionPiechart">piechart</button>
+    </div>
     </div>
 
     <div id="latestWea" class="collapse"></div>
-
+    <div id="latestUbike" class="collapse"></div>
+    <div id="accordionParchart" class="collapse"><svg id="svgPie"></svg></div>
 
 
     <div class = "container" id = "accordionBarchart">
@@ -525,11 +529,14 @@
             capacity = parseInt(data,10);
             paint();}
         );}
+        
 
     // -------------
     $('#latestWea').load('queryWeb.html');
+    $('#latestUbike').load('queryUbike.html');
+
     // -------------
-    
+
     </script>
 </body>
 </html>

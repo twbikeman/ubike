@@ -120,13 +120,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return render_template('index.html')
+    return render_template('index.html', pieData = [11,22,33])
 
 
 
 @app.route('/pie4.html')
 def pie4():
-    return render_template('pie4.html', data = {'a':11,'b':22})
+    return render_template('pie4.html', pieData = [11,22,33])
 
 
 
@@ -181,7 +181,6 @@ def data(path):
 
 
 if __name__ == '__main__':
-
     app.run(host="0.0.0.0", port = 80, debug = True)
 
 
