@@ -66,6 +66,9 @@ FLUSH PRIVILEGES;
 
 SELECT * FROM project_dsci.ubike ORDER BY id DESC LIMIT 1;
 
+mysqldump -u [username] -p[userpassword] [databasename] > [filename].sql
+mysql -u [username] -p[userpassword] [databasename] < [filename].sql
+
 
 
 INTO OUTFILE '/path/to/file.csv'
