@@ -4,7 +4,6 @@ from flask import render_template
 from flask import send_file
 from flask import Response
 import pymysql
-
 import datetime
 
 
@@ -19,10 +18,7 @@ class Data:
         self.sta = ''
         self.date = datetime.datetime.now()
         
-
 current = Data()
-print(current.listData)
-
 
 def convArea(sta):
     switcher = {
@@ -61,8 +57,8 @@ def queryWeather(query_str):
     db.close()
     return weather
 
-# --------------weather--------------------------
-def getLastestWeather():
+# --------------get lastest weather--------------------------
+def getLatestWeather():
     db = pymysql.connect('127.0.0.1','che0520','che670520','project_dsci')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     query_str ="SELECT weather.sta, temp, humid, rain, time FROM weather INNER JOIN (SELECT sta, MAX(time) AS maxtime FROM weather GROUP BY sta) AS latest On (weather.sta = latest.sta AND latest.maxtime = weather.time) ORDER BY FIELD (weather.sta, '臺北','大直','松山','臺灣大學','大安森林','信義','社子','天母','士林','大屯山','文化大學','平等','陽明山','鞍部','石牌','大屯山','內湖','文山');"
@@ -74,9 +70,9 @@ def getLastestWeather():
     db.close()
     return weather
 
-#-------------ubike---------------------
+#-------------ubike query---------------------
 
-def getUbikeData(query_str):
+def queryUbike(query_str):
     db = pymysql.connect('127.0.0.1','che0520','che670520','project_dsci')
     cursor = db.cursor(pymysql.cursors.DictCursor)
     cursor.execute(query_str)
@@ -84,15 +80,15 @@ def getUbikeData(query_str):
     db.commit()
     for row in cursor:
         time = row['time'].strftime('%H:%M')
-        demand = row['tot'] - row['sbi']
+        sbi = row['sbi']
         tot = row['tot']
-        ubike.append([time, demand, tot])
+        ubike.append([time, sbi, tot])
     db.close()
     return ubike
 
 
-#--------------------ubike -----------------
-def getLastestUbike():
+#--------------------get latest ubike -----------------
+def getLatestUbike():
     db = pymysql.connect('127.0.0.1','che0520','che670520','project_dsci')
     cursor = db.cursor(pymysql.cursors.DictCursor)
 
@@ -104,18 +100,15 @@ def getLastestUbike():
     db.commit()
     for row in cursor:
         sna = row['sna']
-        demand = int(row['tot']) - int(row['sbi'])
-        ubike.append([sna, row['tot'], row['sbi'], demand, row['mday']])
+        sbi = int(row['sbi'])
+        ubike.append([sna, row['tot'], row['sbi'], row['mday']])
     db.close()
     return ubike
 
 #-------------------------------------------------------------
 
 
-
 app = Flask(__name__)
-
-
 
 
 @app.route('/')
@@ -123,22 +116,15 @@ def root():
     return render_template('index.html', pieData = [11,22,33])
 
 
+@app.route('/queryLatestWeb.html')
+def queryLatestWeb():
+    weather = getLatestWeather()
+    return render_template('queryLatestWeb.html', weather = weather)
 
-@app.route('/pie4.html')
-def pie4():
-    return render_template('pie4.html', pieData = [11,22,33])
-
-
-
-@app.route('/queryWeb.html')
-def queryWeb():
-    weather = getLastestWeather()
-    return render_template('queryWeb.html', weather = weather)
-
-@app.route('/queryUbike.html')
-def queryUbike():
-    ubike = getLastestUbike()
-    return render_template('queryUbike.html', ubike = ubike)
+@app.route('/queryLatestUbike.html')
+def queryLatestUbike():
+    ubike = getLatestUbike()
+    return render_template('queryLatestUbike.html', ubike = ubike)
 
 
 
@@ -147,38 +133,24 @@ def queryUbike():
 @app.route('/getUbike.html', methods = ['POST']) 
 def getUbike():
     if request.method == 'POST':
-
         query_str =  "SELECT sna, tot, sbi, mday AS time From ubike WHERE sna = '{}' AND DATE(mday) = '{}' ".format(request.form['sta'], request.form['ubikeDate'])
-        bike = getUbikeData(query_str)
-        tot = bike[0][2]
-        
+        bike = queryUbike(query_str) 
         with open("templates/data/dataUbike.json","w") as fp:
             newList=[]
-            
             for row in bike:
                 newList.append('"{}":{}'.format(row[0], row[1]))
-            fp.write('{')
-            fp.write('{}'.format(','.join(newList)))
-            fp.write('}')
-            
-        ## update the content
-        return str(tot)
-        # return request.form['sta'] + request.form['_date'] 
+            fp.write('{' +  '{}'.format(','.join(newList)) + '}')
+        return str(row[2]) # tot
+       
 
 
-
-
-
-
-
+@app.route('/pie4.html')
+def pie4():
+    return render_template('pie4.html', pieData = [11,22,33])
 
 @app.route( "/data/<path>")
 def data(path):
     return render_template('/data/' + path)
-
-
-
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port = 80, debug = True)

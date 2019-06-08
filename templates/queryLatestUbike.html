@@ -1,0 +1,33 @@
+
+    <div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr><th scope="col">sna</th>
+            <th scope="col">tot</th>
+            <th scope="col">sbi</th>
+            <th scope="col">time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        {% for u in ubike %}
+        <tr>
+        <td>
+        {% if u[2] >= u[1] / 2 %}
+            <p class="text-success"> {{ u[0] }}
+        {% elif u[2] >= u[1] / 4 %}    
+            <p class="text-warning"> {{ u[0] }}
+        {% else %}
+            <p class="text-danger"> {{ u[0] }}
+        {% endif %}
+        </td> 
+        <td> {{ u[1] }} </td> 
+        <td> {{ u[2] }} </td>  <!-- sbi -->
+        <td> {{ u[3] }} </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <div>
+  
