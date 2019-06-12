@@ -14,6 +14,12 @@ groups [username]
 
 ---------------- MariaDB --------
 
+
+SELECT tot, sbi, mday, temp, humid, rain FROM ubike INNER JOIN (SELECT * FROM weather WHERE sta = '信義') AS wea ON DAY(wea.time) = DAY(ubike.mday) AND HOUR(wea.time) = HOUR(ubike.mday) WHERE sno = 1 INTO OUTFILE  '/tmp/ubike.csv' FIELDS TERMINATED BY ',';
+
+
+
+
 /opt/google/chrome/google-chrome
 
 f12
